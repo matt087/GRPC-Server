@@ -104,7 +104,6 @@ class UserService(user_service_pb2_grpc.UserServiceServicer):
         con = self.create_db_connection()
         cur = con.cursor()
         
-        # Ejecuta la consulta para obtener los datos del usuario
         cur.execute("SELECT email, password, nombre, admin FROM users WHERE email = ? AND password = ?", 
                     (request.email, request.password))
         response = cur.fetchone()
@@ -113,18 +112,16 @@ class UserService(user_service_pb2_grpc.UserServiceServicer):
             con.close()
             return user_service_pb2.LoginResponse(success=False, message="Invalid credentials.", content=None)
         
-        # Obtiene los cursos asociados con el usuario (suponiendo que tienes una tabla de relación)
         cur.execute("SELECT nombre FROM cursos WHERE id IN (SELECT curso_id FROM user_courses WHERE user_email = ?)", 
                     (response[0],))
         courses = [row[0] for row in cur.fetchall()]
         
-        # Crea un objeto UserInfo con los datos del usuario y sus cursos
         user_info = user_service_pb2.User(
             email=response[0],
-            password=response[1],  # Si necesitas devolver la contraseña, ten cuidado con la seguridad
-            name=response[2],  # Aquí puedes usar 'nombre' si no tienes un campo 'username'
-            cursos=courses,  # Esto será el arreglo de cursos
-            admin=response[3]  # 1 si es admin, 0 si no lo es
+            password=response[1],  
+            name=response[2], 
+            cursos=courses, 
+            admin=response[3]  # 1 si es admin, 2 si no lo es
         )
 
         con.close()
@@ -141,6 +138,38 @@ class UserService(user_service_pb2_grpc.UserServiceServicer):
         con.close()
         return user_service_pb2.ObtenerCursoResponse(cursos=cursos)
     
+    def ListCourses(self, request, context):
+        con = self.create_db_connection()
+        cur = con.cursor()
+        cur.execute("SELECT id, nombre, descripcion FROM cursos")
+        rows = cur.fetchall()
+        con.close()
+
+        courses = []
+        for row in rows:
+            courses.append(user_service_pb2.Curso(id=row[0], nombre=row[1], descripcion=row[2]))
+        return user_service_pb2.ListCoursesResponse(courses=courses)
+    
+    def ListUserCourses(self, request, context):
+        con = self.create_db_connection()
+        cur = con.cursor()
+        
+        cur.execute("""
+            SELECT c.id, c.nombre, c.descripcion 
+            FROM cursos AS c
+            JOIN user_courses AS uc ON c.id = uc.curso_id
+            WHERE uc.user_email = ?
+        """, (request.email,))
+        
+        rows = cur.fetchall()
+        con.close()
+
+        user_courses = []
+        for row in rows:
+            user_courses.append(user_service_pb2.Curso(id=row[0], nombre=row[1], descripcion=row[2]))
+        
+        return user_service_pb2.ListUserCoursesResponse(courses=user_courses)
+
     def CrearCurso(self, request, context):
         con = self.create_db_connection()
         cur = con.cursor()    

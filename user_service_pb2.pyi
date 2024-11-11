@@ -77,6 +77,12 @@ class ObtenerUserResponse(_message.Message):
     admin: int
     def __init__(self, admin: _Optional[int] = ...) -> None: ...
 
+class ObtenerUsersRequest(_message.Message):
+    __slots__ = ("email",)
+    EMAIL_FIELD_NUMBER: _ClassVar[int]
+    email: str
+    def __init__(self, email: _Optional[str] = ...) -> None: ...
+
 class ObtenerUsersResponse(_message.Message):
     __slots__ = ("users",)
     USERS_FIELD_NUMBER: _ClassVar[int]
@@ -138,3 +144,25 @@ class ObtenerCursoIDResponse(_message.Message):
     ID_FIELD_NUMBER: _ClassVar[int]
     id: _containers.RepeatedScalarFieldContainer[str]
     def __init__(self, id: _Optional[_Iterable[str]] = ...) -> None: ...
+
+class ListCoursesRequest(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
+
+class ListCoursesResponse(_message.Message):
+    __slots__ = ("courses",)
+    COURSES_FIELD_NUMBER: _ClassVar[int]
+    courses: _containers.RepeatedCompositeFieldContainer[Curso]
+    def __init__(self, courses: _Optional[_Iterable[_Union[Curso, _Mapping]]] = ...) -> None: ...
+
+class ListUserCoursesRequest(_message.Message):
+    __slots__ = ("email",)
+    EMAIL_FIELD_NUMBER: _ClassVar[int]
+    email: str
+    def __init__(self, email: _Optional[str] = ...) -> None: ...
+
+class ListUserCoursesResponse(_message.Message):
+    __slots__ = ("courses",)
+    COURSES_FIELD_NUMBER: _ClassVar[int]
+    courses: _containers.RepeatedCompositeFieldContainer[Curso]
+    def __init__(self, courses: _Optional[_Iterable[_Union[Curso, _Mapping]]] = ...) -> None: ...

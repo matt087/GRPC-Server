@@ -45,6 +45,10 @@ message ObtenerUserResponse {
   int32 admin = 1;
 }
 
+message ObtenerUsersRequest {
+  string email = 1;
+}
+
 message ObtenerUsersResponse {
   repeated User users = 1;
 }
@@ -84,6 +88,18 @@ message ObtenerCursoIDResponse {
   repeated string id = 1;
 }
 
+message ListCoursesRequest {}
+message ListCoursesResponse {
+    repeated Curso courses = 1;
+}
+
+message ListUserCoursesRequest {
+    string email = 1;
+}
+message ListUserCoursesResponse {
+    repeated Curso courses = 1;
+}
+
 service CourseService {
   rpc CrearCurso (CrearCursoRequest) returns (CrearCursoResponse);
   rpc ObtenerCurso (ObtenerCursoRequest) returns (ObtenerCursoResponse);
@@ -97,4 +113,6 @@ service UserService {
   rpc EliminarUser (EliminarUserRequest) returns (EliminarUserResponse);
   rpc ObtenerUser (ObtenerUserRequest) returns (ObtenerUserResponse);
   rpc ObtenerUsers (ObtenerUserRequest) returns (ObtenerUsersResponse);
+  rpc ListCourses(ListCoursesRequest) returns (ListCoursesResponse);
+  rpc ListUserCourses(ListUserCoursesRequest) returns (ListUserCoursesResponse);
 }

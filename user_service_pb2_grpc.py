@@ -260,6 +260,16 @@ class UserServiceStub(object):
                 request_serializer=user__service__pb2.ObtenerUserRequest.SerializeToString,
                 response_deserializer=user__service__pb2.ObtenerUsersResponse.FromString,
                 _registered_method=True)
+        self.ListCourses = channel.unary_unary(
+                '/user_service.UserService/ListCourses',
+                request_serializer=user__service__pb2.ListCoursesRequest.SerializeToString,
+                response_deserializer=user__service__pb2.ListCoursesResponse.FromString,
+                _registered_method=True)
+        self.ListUserCourses = channel.unary_unary(
+                '/user_service.UserService/ListUserCourses',
+                request_serializer=user__service__pb2.ListUserCoursesRequest.SerializeToString,
+                response_deserializer=user__service__pb2.ListUserCoursesResponse.FromString,
+                _registered_method=True)
 
 
 class UserServiceServicer(object):
@@ -295,6 +305,18 @@ class UserServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ListCourses(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListUserCourses(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_UserServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -322,6 +344,16 @@ def add_UserServiceServicer_to_server(servicer, server):
                     servicer.ObtenerUsers,
                     request_deserializer=user__service__pb2.ObtenerUserRequest.FromString,
                     response_serializer=user__service__pb2.ObtenerUsersResponse.SerializeToString,
+            ),
+            'ListCourses': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListCourses,
+                    request_deserializer=user__service__pb2.ListCoursesRequest.FromString,
+                    response_serializer=user__service__pb2.ListCoursesResponse.SerializeToString,
+            ),
+            'ListUserCourses': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListUserCourses,
+                    request_deserializer=user__service__pb2.ListUserCoursesRequest.FromString,
+                    response_serializer=user__service__pb2.ListUserCoursesResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -459,6 +491,60 @@ class UserService(object):
             '/user_service.UserService/ObtenerUsers',
             user__service__pb2.ObtenerUserRequest.SerializeToString,
             user__service__pb2.ObtenerUsersResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListCourses(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/user_service.UserService/ListCourses',
+            user__service__pb2.ListCoursesRequest.SerializeToString,
+            user__service__pb2.ListCoursesResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListUserCourses(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/user_service.UserService/ListUserCourses',
+            user__service__pb2.ListUserCoursesRequest.SerializeToString,
+            user__service__pb2.ListUserCoursesResponse.FromString,
             options,
             channel_credentials,
             insecure,

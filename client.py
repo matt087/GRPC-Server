@@ -4,11 +4,53 @@ import user_service_pb2_grpc
 import os
 import sys
 
-def distincionMenu(isadmin):
+def distincionMenu(isadmin, user_stub, course_stub):
     if isadmin == 2:
         print("\tMenú de Usuario")
+        print("1) Matricularse a un Curso")
+        print("2) Mis Cursos")
+        print("3) Salir")
+        while(True):
+            opc = int(input("Seleccione una opción: "))
+            if opc in [1,2,3,4]:
+                break
+        if opc == 1:
+            response = user_stub.ListCourses(user_service_pb2.ListCoursesRequest())
+            for course in response.courses:
+                print(f"Course ID: {course.id}, Name: {course.nombre}, Description: {course.descripcion}")
+        
+        
+
     elif isadmin == 1:
         print("\tMenú de Administrador")
+        print("1) Ver Usuarios")
+        print("2) Eliminar Usuarios")
+        print("3) Registrar Cursos")
+        print("4) Salir")
+        while(True):
+            opc = int(input("Seleccione una opción: "))
+            if opc in [1,2,3,4]:
+                break
+        if opc == 1:
+            #Ver
+            request = user_service_pb2.ObtenerUsersRequest(email="")
+            response = user_stub.ObtenerUsers(request)
+            os.system("cls")
+            #os.system("clear")     #Linux
+            print("\tListado de Usuarios")
+            for user in response.users:
+                print("-" * 30)
+                print(f"Email     : {user.email}")
+                print(f"Password  : {user.password}")
+                print(f"Nombre    : {user.name}")
+                print(f"Admin     : {'Sí' if user.admin == 1 else 'No'}")
+                print(f"Cursos    : {', '.join(user.cursos) if user.cursos else 'No inscrito'}")
+                print("-" * 30)
+            input("PULSE CUALQUIER TECLA PARA CONTINUAR...")
+            os.system("cls")
+            #os.system("clear")     #Linux
+
+
 
 def run():
     channel = grpc.insecure_channel('localhost:50051')
@@ -37,7 +79,7 @@ def run():
             input("PULSE CUALQUIER TECLA PARA CONTINUAR...")
             os.system("cls")
             #os.system("clear")     #Linux
-            distincionMenu(response.content.admin)
+            distincionMenu(response.content.admin, user_stub, course_stub)
         elif opc == 2:
             #Register
             os.system("cls")
@@ -61,12 +103,6 @@ def run():
         elif opc == 3:
             print("\n¡Gracias por usar la plataforma!")
             sys.exit(0)
-
-     
-    #Ver
-    request = user_service_pb2.ObtenerUserRequest(email="")
-    response = user_stub.ObtenerUsers(request)
-    print("Ver", response)
    
     #Register curso
     curso = user_service_pb2.Curso(
