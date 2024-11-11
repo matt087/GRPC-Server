@@ -1,0 +1,100 @@
+syntax = "proto3";
+
+package user_service;
+
+message User {
+  string email = 1;
+  string password = 2;
+  string name = 3;
+  repeated Curso cursos = 4;
+  int32 admin = 5;
+}
+message RegisterRequest {
+  User user = 1;
+}
+
+message RegisterResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  bool success = 1;
+  string message = 2;
+  User content = 3; 
+}
+message EliminarUserRequest {
+  string email = 1;
+}
+
+message EliminarUserResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message ObtenerUserRequest {
+  string email = 1;
+}
+
+message ObtenerUserResponse {
+  int32 admin = 1;
+}
+
+message ObtenerUsersResponse {
+  repeated User users = 1;
+}
+
+message Curso {
+  string id = 1;
+  string nombre = 2;
+  string descripcion = 3;
+}
+message CrearCursoRequest {
+  Curso curso = 1;
+}
+
+message CrearCursoResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message EliminarCursoRequest {
+  string id = 1;
+}
+
+message EliminarCursoResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message ObtenerCursoRequest {
+  string id = 1;
+}
+
+message ObtenerCursoResponse {
+  Curso curso = 1;
+}
+
+message ObtenerCursoIDResponse {
+  repeated string id = 1;
+}
+
+service CourseService {
+  rpc CrearCurso (CrearCursoRequest) returns (CrearCursoResponse);
+  rpc ObtenerCurso (ObtenerCursoRequest) returns (ObtenerCursoResponse);
+  rpc ObtenerCursoID (ObtenerCursoRequest) returns (ObtenerCursoIDResponse);
+  rpc EliminarCurso (EliminarCursoRequest) returns (EliminarCursoResponse);
+}
+
+service UserService {
+  rpc Register (RegisterRequest) returns (RegisterResponse);
+  rpc Login (LoginRequest) returns (LoginResponse);
+  rpc EliminarUser (EliminarUserRequest) returns (EliminarUserResponse);
+  rpc ObtenerUser (ObtenerUserRequest) returns (ObtenerUserResponse);
+  rpc ObtenerUsers (ObtenerUserRequest) returns (ObtenerUsersResponse);
+}
