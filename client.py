@@ -22,6 +22,13 @@ def distincionMenu(isadmin, user_stub, course_stub, em):
                 print("\n\tLista de Cursos")
                 for course in response.courses:
                     print(f"ID: {course.id}, Nombre: {course.nombre}, Descripción: {course.descripcion}")
+                response = course_stub.ListCourses(user_service_pb2.ListCoursesRequest())
+                course_id = input("Ingrese el ID del curso al que desea matricularse: ")                
+                matricula_response = course_stub.MatricularCurso(user_service_pb2.MatricularCursoRequest(email=em, course_id=course_id))
+                print(matricula_response.message)
+                input("PULSE CUALQUIER TECLA PARA CONTINUAR...")
+                os.system("cls")
+                #os.system("clear")     #Linux
             elif opc == 2:
                 print("\tMis Cursos:")
                 response = user_stub.ListUserCourses(user_service_pb2.ListUserCoursesRequest(email=em))

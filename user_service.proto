@@ -94,8 +94,19 @@ message ListCoursesResponse {
 message ListUserCoursesRequest {
     string email = 1;
 }
+
 message ListUserCoursesResponse {
     repeated Curso courses = 1;
+}
+
+message MatricularCursoRequest {
+    string email = 1;
+    string course_id = 2;
+}
+
+message MatricularCursoResponse {
+    bool success = 1;
+    string message = 2;
 }
 
 service CourseService {
@@ -104,6 +115,7 @@ service CourseService {
   rpc ObtenerCursoID (ObtenerCursoRequest) returns (ObtenerCursoIDResponse);
   rpc EliminarCurso (EliminarCursoRequest) returns (EliminarCursoResponse);
   rpc ListCourses(ListCoursesRequest) returns (ListCoursesResponse);
+  rpc MatricularCurso(MatricularCursoRequest) returns (MatricularCursoResponse);
 }
 
 service UserService {

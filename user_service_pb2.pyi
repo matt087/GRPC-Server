@@ -164,3 +164,19 @@ class ListUserCoursesResponse(_message.Message):
     COURSES_FIELD_NUMBER: _ClassVar[int]
     courses: _containers.RepeatedCompositeFieldContainer[Curso]
     def __init__(self, courses: _Optional[_Iterable[_Union[Curso, _Mapping]]] = ...) -> None: ...
+
+class MatricularCursoRequest(_message.Message):
+    __slots__ = ("email", "course_id")
+    EMAIL_FIELD_NUMBER: _ClassVar[int]
+    COURSE_ID_FIELD_NUMBER: _ClassVar[int]
+    email: str
+    course_id: str
+    def __init__(self, email: _Optional[str] = ..., course_id: _Optional[str] = ...) -> None: ...
+
+class MatricularCursoResponse(_message.Message):
+    __slots__ = ("success", "message")
+    SUCCESS_FIELD_NUMBER: _ClassVar[int]
+    MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    success: bool
+    message: str
+    def __init__(self, success: bool = ..., message: _Optional[str] = ...) -> None: ...
