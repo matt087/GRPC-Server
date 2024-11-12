@@ -76,9 +76,7 @@ message EliminarCursoResponse {
   string message = 2;
 }
 
-message ObtenerCursoRequest {
-  string id = 1;
-}
+message ObtenerCursoRequest {}
 
 message ObtenerCursoResponse {
   Curso curso = 1;
@@ -105,6 +103,7 @@ service CourseService {
   rpc ObtenerCurso (ObtenerCursoRequest) returns (ObtenerCursoResponse);
   rpc ObtenerCursoID (ObtenerCursoRequest) returns (ObtenerCursoIDResponse);
   rpc EliminarCurso (EliminarCursoRequest) returns (EliminarCursoResponse);
+  rpc ListCourses(ListCoursesRequest) returns (ListCoursesResponse);
 }
 
 service UserService {

@@ -137,6 +137,7 @@ class UserService(user_service_pb2_grpc.UserServiceServicer):
             cursos.append(user_service_pb2.Curso(id=row[0], nombre=row[1], descripcion=row[2]))
         con.close()
         return user_service_pb2.ObtenerCursoResponse(cursos=cursos)
+
     
     def ListCourses(self, request, context):
         con = self.create_db_connection()
