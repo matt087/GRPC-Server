@@ -45,9 +45,7 @@ message ObtenerUserResponse {
   int32 admin = 1;
 }
 
-message ObtenerUsersRequest {
-  string email = 1;
-}
+message ObtenerUsersRequest {}
 
 message ObtenerUsersResponse {
   repeated User users = 1;

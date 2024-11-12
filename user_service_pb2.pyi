@@ -78,10 +78,8 @@ class ObtenerUserResponse(_message.Message):
     def __init__(self, admin: _Optional[int] = ...) -> None: ...
 
 class ObtenerUsersRequest(_message.Message):
-    __slots__ = ("email",)
-    EMAIL_FIELD_NUMBER: _ClassVar[int]
-    email: str
-    def __init__(self, email: _Optional[str] = ...) -> None: ...
+    __slots__ = ()
+    def __init__(self) -> None: ...
 
 class ObtenerUsersResponse(_message.Message):
     __slots__ = ("users",)

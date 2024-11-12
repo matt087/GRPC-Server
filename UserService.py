@@ -67,15 +67,34 @@ class UserService(user_service_pb2_grpc.UserServiceServicer):
         cur = con.cursor()
         cur.execute("SELECT * FROM users")
         rows = cur.fetchall() 
-        con.close()
+
         users = []
 
         for row in rows:
             cursos_inscritos = row[3].split(",") if row[3] else []
+            cursos_detalle = []
+            for curso_id in cursos_inscritos:
+                cur.execute("SELECT id, nombre, descripcion FROM cursos WHERE id = ?", (curso_id,))
+                curso_row = cur.fetchone()
+                if curso_row:
+                    curso = user_service_pb2.Curso(
+                        id=curso_row[0],
+                        nombre=curso_row[1],
+                        descripcion=curso_row[2]
+                    )
+                    cursos_detalle.append(curso)
+
             users.append(user_service_pb2.User(
-                email=row[0], password=row[1], name=row[2], cursos=cursos_inscritos, admin=row[4]
+                email=row[0],
+                password=row[1],
+                name=row[2],
+                cursos=cursos_detalle,  
+                admin=row[4]
             ))
+        con.close()
+
         return user_service_pb2.ObtenerUsersResponse(users=users)
+
 
     
     def EliminarUser(self, request, context):
@@ -214,7 +233,7 @@ def serve():
     user_service = UserService()
     user_service.create_table_users()
     user_service.create_table_cursos()
-    
+
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     user_service_pb2_grpc.add_UserServiceServicer_to_server(user_service, server)
     user_service_pb2_grpc.add_CourseServiceServicer_to_server(user_service, server)

@@ -49,8 +49,6 @@ def distincionMenu(isadmin, user_stub, course_stub, em):
                 #os.system("clear")     #Linux
                 break
 
-        
-
     elif isadmin == 1:
         while True:
             print("\tMenú de Administrador")
@@ -65,8 +63,7 @@ def distincionMenu(isadmin, user_stub, course_stub, em):
                     break
             if opc == 1:
                 #Ver
-                request = user_service_pb2.ObtenerUsersRequest(email="")
-                response = user_stub.ObtenerUsers(request)
+                response = user_stub.ObtenerUsers(user_service_pb2.ObtenerUsersRequest())
                 os.system("cls")
                 #os.system("clear")     #Linux
                 print("\tListado de Usuarios")
@@ -76,7 +73,12 @@ def distincionMenu(isadmin, user_stub, course_stub, em):
                     print(f"Password  : {user.password}")
                     print(f"Nombre    : {user.name}")
                     print(f"Admin     : {'Sí' if user.admin == 1 else 'No'}")
-                    print(f"Cursos    : {', '.join(user.cursos) if user.cursos else 'No inscrito'}")
+                    if user.cursos:
+                        cursos_nombres = [curso.nombre for curso in user.cursos]  
+                        print(f"Cursos    : {', '.join(cursos_nombres)}")
+                    else:
+                        print(f"Cursos    : No inscrito")
+                    
                     print("-" * 30)
                 input("PULSE CUALQUIER TECLA PARA CONTINUAR...")
                 os.system("cls")
