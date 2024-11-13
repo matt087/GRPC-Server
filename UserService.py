@@ -94,16 +94,19 @@ class UserService(user_service_pb2_grpc.UserServiceServicer):
         con.close()
 
         return user_service_pb2.ObtenerUsersResponse(users=users)
-
-
     
     def EliminarUser(self, request, context):
         con = self.create_db_connection()
         cur = con.cursor()
+        cur.execute("SELECT * FROM users WHERE email = ?", (request.email,))
+        if cur.fetchone() is None:
+            con.close()
+            return user_service_pb2.EliminarUserResponse(message="Usuario no encontrado.", success=False)
         cur.execute("DELETE FROM users WHERE email = ?", (request.email,))
         con.commit()
         con.close()
-        return user_service_pb2.EliminarUserResponse(success=True, message="Estudiante eliminado.")
+        return user_service_pb2.EliminarUserResponse(
+            message="Usuario eliminado exitosamente.", success=True)
 
     def Login(self, request, context):
         con = self.create_db_connection()
@@ -115,7 +118,7 @@ class UserService(user_service_pb2_grpc.UserServiceServicer):
         
         if response is None:
             con.close()
-            return user_service_pb2.LoginResponse(success=False, message="Invalid credentials.", content=None)
+            return user_service_pb2.LoginResponse(success=False, message="Credenciales Inválidas", content=None)
         
         cur.execute("SELECT nombre FROM cursos WHERE id IN (SELECT curso_id FROM user_courses WHERE user_email = ?)", 
                     (response[0],))
@@ -193,9 +196,25 @@ class UserService(user_service_pb2_grpc.UserServiceServicer):
         ids = [row[0] for row in rows]
         return user_service_pb2.ObtenerCursoIDResponse(id=ids)
     
-    def EliminarCurso(self, request, context):
-        #Falta hacer
-        return user_service_pb2.EliminarCursoResponse()
+    def EliminarMatricula(self, request, context):
+        con = self.create_db_connection()
+        cur = con.cursor()
+        cur.execute("SELECT cursos FROM users WHERE email = ?", (request.email,))
+        row = cur.fetchone()
+        cursos = row[0]
+        if not cursos:
+            con.close()
+            return user_service_pb2.EliminarMatriculaResponse(message="El usuario no está inscrito en ningún curso.", success=False)
+        cursos_lista = cursos.split(",")
+        if str(request.course_id) not in cursos_lista:
+            con.close()
+            return user_service_pb2.EliminarMatriculaResponse(message="El usuario no está matriculado en este curso.", success=False)
+        cursos_lista.remove(str(request.course_id))
+        cursos_actualizados = ",".join(cursos_lista)
+        cur.execute("UPDATE users SET cursos = ? WHERE email = ?", (cursos_actualizados, request.email))
+        con.commit()
+        con.close()
+        return user_service_pb2.EliminarMatriculaResponse(message="Matrícula eliminada exitosamente.", success=True)
 
     def validarNick(self, cur, nick):
         nick_check = cur.execute("SELECT * FROM users WHERE email = ?", (nick,))

@@ -25,6 +25,22 @@ class RegisterRequest(_message.Message):
     user: User
     def __init__(self, user: _Optional[_Union[User, _Mapping]] = ...) -> None: ...
 
+class EliminarMatriculaRequest(_message.Message):
+    __slots__ = ("email", "course_id")
+    EMAIL_FIELD_NUMBER: _ClassVar[int]
+    COURSE_ID_FIELD_NUMBER: _ClassVar[int]
+    email: str
+    course_id: str
+    def __init__(self, email: _Optional[str] = ..., course_id: _Optional[str] = ...) -> None: ...
+
+class EliminarMatriculaResponse(_message.Message):
+    __slots__ = ("message", "success")
+    MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    SUCCESS_FIELD_NUMBER: _ClassVar[int]
+    message: str
+    success: bool
+    def __init__(self, message: _Optional[str] = ..., success: bool = ...) -> None: ...
+
 class RegisterResponse(_message.Message):
     __slots__ = ("success", "message")
     SUCCESS_FIELD_NUMBER: _ClassVar[int]

@@ -4,21 +4,24 @@ import user_service_pb2_grpc
 import os
 import sys
 
+#Credenciales de admin: admin@admin.com / 1234
+
 def distincionMenu(isadmin, user_stub, course_stub, em):
     if isadmin == 2:
         while True:
+            os.system('cls' if os.name == 'nt' else 'clear')
             print("\tMenú de Usuario")
             print("1) Matricularse a un Curso")
             print("2) Mis Cursos")
-            print("3) Salir")
+            print("3) Eliminar Matrícula")
+            print("4) Salir")
             while(True):
                 opc = int(input("Seleccione una opción: "))
-                if opc in [1,2,3]:
+                if opc in [1,2,3,4]:
                     break
             if opc == 1:
                 response = user_stub.ListCourses(user_service_pb2.ListCoursesRequest())
-                os.system("cls")
-                #os.system("clear")     #Linux
+                os.system('cls' if os.name == 'nt' else 'clear')
                 print("\n\tLista de Cursos")
                 for course in response.courses:
                     print(f"ID: {course.id}, Nombre: {course.nombre}, Descripción: {course.descripcion}")
@@ -27,9 +30,9 @@ def distincionMenu(isadmin, user_stub, course_stub, em):
                 matricula_response = course_stub.MatricularCurso(user_service_pb2.MatricularCursoRequest(email=em, course_id=course_id))
                 print(matricula_response.message)
                 input("PULSE CUALQUIER TECLA PARA CONTINUAR...")
-                os.system("cls")
-                #os.system("clear")     #Linux
+                os.system('cls' if os.name == 'nt' else 'clear')
             elif opc == 2:
+                os.system('cls' if os.name == 'nt' else 'clear')
                 print("\tMis Cursos:")
                 response = user_stub.ListUserCourses(user_service_pb2.ListUserCoursesRequest(email=em))
                 if response.courses:
@@ -42,15 +45,23 @@ def distincionMenu(isadmin, user_stub, course_stub, em):
                 else:
                     print("No estás matriculado en ningún curso.")
                 input("PULSE CUALQUIER TECLA PARA CONTINUAR...")
-                os.system("cls")
-                #os.system("clear")     #Linux
+                os.system('cls' if os.name == 'nt' else 'clear')
             elif opc == 3:
-                os.system("cls")
-                #os.system("clear")     #Linux
+                course_id = input("Ingrese el ID del curso: ")
+                request = user_service_pb2.EliminarMatriculaRequest(email=em, course_id=course_id)
+                response = user_stub.EliminarMatricula(request)
+                if response.success:
+                    print("Matrícula eliminada exitosamente.")
+                else:
+                    print(f"Error: {response.message}")
+                input("PULSE CUALQUIER TECLA PARA CONTINUAR...")
+                os.system('cls' if os.name == 'nt' else 'clear')
+            elif opc == 4:
+                os.system('cls' if os.name == 'nt' else 'clear')
                 break
-
     elif isadmin == 1:
         while True:
+            os.system('cls' if os.name == 'nt' else 'clear')
             print("\tMenú de Administrador")
             print("1) Ver Usuarios")
             print("2) Ver Cursos")
@@ -64,8 +75,7 @@ def distincionMenu(isadmin, user_stub, course_stub, em):
             if opc == 1:
                 #Ver
                 response = user_stub.ObtenerUsers(user_service_pb2.ObtenerUsersRequest())
-                os.system("cls")
-                #os.system("clear")     #Linux
+                os.system('cls' if os.name == 'nt' else 'clear')
                 print("\tListado de Usuarios")
                 for user in response.users:
                     print("-" * 30)
@@ -81,12 +91,10 @@ def distincionMenu(isadmin, user_stub, course_stub, em):
                     
                     print("-" * 30)
                 input("PULSE CUALQUIER TECLA PARA CONTINUAR...")
-                os.system("cls")
-                #os.system("clear")     #Linux
+                os.system('cls' if os.name == 'nt' else 'clear')
             if opc == 2:
                 response = course_stub.ListCourses(user_service_pb2.ListCoursesRequest())
-                os.system("cls")
-                #os.system("clear")     #Linux
+                os.system('cls' if os.name == 'nt' else 'clear')
                 print("\n\tLista de Cursos")
                 for curso in response.courses:
                     print("-" * 30)
@@ -95,11 +103,20 @@ def distincionMenu(isadmin, user_stub, course_stub, em):
                     print(f"Descripción : {curso.descripcion}")
                     print("-" * 30)
                 input("PULSE CUALQUIER TECLA PARA CONTINUAR...")
-                os.system("cls")
-                #os.system("clear")     #Linux
+                os.system('cls' if os.name == 'nt' else 'clear')
+            if opc == 3:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                email = input("Ingrese el email del usuario a eliminar: ")
+                request = user_service_pb2.EliminarUserRequest(email=email)
+                response = user_stub.EliminarUser(request)
+                if response.success:
+                    print(response.message)
+                else:
+                    print(f"Error: {response.message}")
+                input("PULSE CUALQUIER TECLA PARA CONTINUAR...")
+                os.system('cls' if os.name == 'nt' else 'clear')
             if opc == 4:
-                os.system("cls")
-                #os.system("clear")     #Linux
+                os.system('cls' if os.name == 'nt' else 'clear')
                 print("\tRegistro de Cursos")
                 curso_id = input("Ingrese el ID del curso: ")
                 nombre = input("Ingrese el nombre del curso: ")
@@ -115,11 +132,9 @@ def distincionMenu(isadmin, user_stub, course_stub, em):
                 else:
                     print("Error:", response.message)
                 input("PULSE CUALQUIER TECLA PARA CONTINUAR...")
-                os.system("cls")
-                #os.system("clear")     #Linux
+                os.system('cls' if os.name == 'nt' else 'clear')
             if opc == 5:
-                os.system("cls")
-                #os.system("clear")     #Linux
+                os.system('cls' if os.name == 'nt' else 'clear')
                 break 
 
 
@@ -141,8 +156,7 @@ def run():
                 break
         if opc == 1:
             #Login
-            os.system("cls")
-            #os.system("clear")     #Linux
+            os.system('cls' if os.name == 'nt' else 'clear')
             print("\tInicio de Sesión")
             em = input("Ingrese su email: ")
             psw = input("Ingrese su contraseña: ")
@@ -150,13 +164,11 @@ def run():
             print(response.message)
             #print(response.content)
             input("PULSE CUALQUIER TECLA PARA CONTINUAR...")
-            os.system("cls")
-            #os.system("clear")     #Linux
+            os.system('cls' if os.name == 'nt' else 'clear')
             distincionMenu(response.content.admin, user_stub, course_stub, em)
         elif opc == 2:
             #Register
-            os.system("cls")
-            #os.system("clear")     #Linux
+            os.system('cls' if os.name == 'nt' else 'clear')
             print("\tRegistro de Usuario")
             em = input("Ingrese su email: ")
             psw = input("Ingrese su contraseña: ")
@@ -171,22 +183,10 @@ def run():
             response = user_stub.Register(user_service_pb2.RegisterRequest(user=user))
             print(response.message)
             input("PULSE CUALQUIER TECLA PARA CONTINUAR...")
-            os.system("cls")
-            #os.system("clear")     #Linux
+            os.system('cls' if os.name == 'nt' else 'clear')
         elif opc == 3:
             print("\n¡Gracias por usar la plataforma!")
             sys.exit(0)
-   
-    #Register curso
-    curso = user_service_pb2.Curso(
-        id="curso_123",
-        nombre="Curso de ejemplo",
-        descripcion="Descripción del curso"
-    )
-    request = user_service_pb2.CrearCursoRequest(curso=curso)
-
-    response = course_stub.CrearCurso(request)
-    print("Respuesta:", response.message)
 
 if __name__ == '__main__':
     run()

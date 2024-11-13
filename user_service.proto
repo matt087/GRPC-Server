@@ -13,6 +13,15 @@ message RegisterRequest {
   User user = 1;
 }
 
+message EliminarMatriculaRequest {
+    string email = 1;      
+    string course_id = 2;   
+}
+
+message EliminarMatriculaResponse{
+  string message = 1;
+  bool success = 2;
+}
 message RegisterResponse {
   bool success = 1;
   string message = 2;
@@ -111,7 +120,6 @@ service CourseService {
   rpc CrearCurso (CrearCursoRequest) returns (CrearCursoResponse);
   rpc ObtenerCurso (ObtenerCursoRequest) returns (ObtenerCursoResponse);
   rpc ObtenerCursoID (ObtenerCursoRequest) returns (ObtenerCursoIDResponse);
-  rpc EliminarCurso (EliminarCursoRequest) returns (EliminarCursoResponse);
   rpc ListCourses(ListCoursesRequest) returns (ListCoursesResponse);
   rpc MatricularCurso(MatricularCursoRequest) returns (MatricularCursoResponse);
 }
@@ -124,4 +132,6 @@ service UserService {
   rpc ObtenerUsers (ObtenerUserRequest) returns (ObtenerUsersResponse);
   rpc ListCourses(ListCoursesRequest) returns (ListCoursesResponse);
   rpc ListUserCourses(ListUserCoursesRequest) returns (ListUserCoursesResponse);
+  rpc EliminarMatricula(EliminarMatriculaRequest) returns (EliminarMatriculaResponse);
+  rpc EliminarCurso (EliminarCursoRequest) returns (EliminarCursoResponse);
 }

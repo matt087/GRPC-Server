@@ -49,11 +49,6 @@ class CourseServiceStub(object):
                 request_serializer=user__service__pb2.ObtenerCursoRequest.SerializeToString,
                 response_deserializer=user__service__pb2.ObtenerCursoIDResponse.FromString,
                 _registered_method=True)
-        self.EliminarCurso = channel.unary_unary(
-                '/user_service.CourseService/EliminarCurso',
-                request_serializer=user__service__pb2.EliminarCursoRequest.SerializeToString,
-                response_deserializer=user__service__pb2.EliminarCursoResponse.FromString,
-                _registered_method=True)
         self.ListCourses = channel.unary_unary(
                 '/user_service.CourseService/ListCourses',
                 request_serializer=user__service__pb2.ListCoursesRequest.SerializeToString,
@@ -82,12 +77,6 @@ class CourseServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def ObtenerCursoID(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def EliminarCurso(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -122,11 +111,6 @@ def add_CourseServiceServicer_to_server(servicer, server):
                     servicer.ObtenerCursoID,
                     request_deserializer=user__service__pb2.ObtenerCursoRequest.FromString,
                     response_serializer=user__service__pb2.ObtenerCursoIDResponse.SerializeToString,
-            ),
-            'EliminarCurso': grpc.unary_unary_rpc_method_handler(
-                    servicer.EliminarCurso,
-                    request_deserializer=user__service__pb2.EliminarCursoRequest.FromString,
-                    response_serializer=user__service__pb2.EliminarCursoResponse.SerializeToString,
             ),
             'ListCourses': grpc.unary_unary_rpc_method_handler(
                     servicer.ListCourses,
@@ -220,33 +204,6 @@ class CourseService(object):
             '/user_service.CourseService/ObtenerCursoID',
             user__service__pb2.ObtenerCursoRequest.SerializeToString,
             user__service__pb2.ObtenerCursoIDResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def EliminarCurso(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/user_service.CourseService/EliminarCurso',
-            user__service__pb2.EliminarCursoRequest.SerializeToString,
-            user__service__pb2.EliminarCursoResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -356,6 +313,16 @@ class UserServiceStub(object):
                 request_serializer=user__service__pb2.ListUserCoursesRequest.SerializeToString,
                 response_deserializer=user__service__pb2.ListUserCoursesResponse.FromString,
                 _registered_method=True)
+        self.EliminarMatricula = channel.unary_unary(
+                '/user_service.UserService/EliminarMatricula',
+                request_serializer=user__service__pb2.EliminarMatriculaRequest.SerializeToString,
+                response_deserializer=user__service__pb2.EliminarMatriculaResponse.FromString,
+                _registered_method=True)
+        self.EliminarCurso = channel.unary_unary(
+                '/user_service.UserService/EliminarCurso',
+                request_serializer=user__service__pb2.EliminarCursoRequest.SerializeToString,
+                response_deserializer=user__service__pb2.EliminarCursoResponse.FromString,
+                _registered_method=True)
 
 
 class UserServiceServicer(object):
@@ -403,6 +370,18 @@ class UserServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def EliminarMatricula(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def EliminarCurso(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_UserServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -440,6 +419,16 @@ def add_UserServiceServicer_to_server(servicer, server):
                     servicer.ListUserCourses,
                     request_deserializer=user__service__pb2.ListUserCoursesRequest.FromString,
                     response_serializer=user__service__pb2.ListUserCoursesResponse.SerializeToString,
+            ),
+            'EliminarMatricula': grpc.unary_unary_rpc_method_handler(
+                    servicer.EliminarMatricula,
+                    request_deserializer=user__service__pb2.EliminarMatriculaRequest.FromString,
+                    response_serializer=user__service__pb2.EliminarMatriculaResponse.SerializeToString,
+            ),
+            'EliminarCurso': grpc.unary_unary_rpc_method_handler(
+                    servicer.EliminarCurso,
+                    request_deserializer=user__service__pb2.EliminarCursoRequest.FromString,
+                    response_serializer=user__service__pb2.EliminarCursoResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -631,6 +620,60 @@ class UserService(object):
             '/user_service.UserService/ListUserCourses',
             user__service__pb2.ListUserCoursesRequest.SerializeToString,
             user__service__pb2.ListUserCoursesResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def EliminarMatricula(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/user_service.UserService/EliminarMatricula',
+            user__service__pb2.EliminarMatriculaRequest.SerializeToString,
+            user__service__pb2.EliminarMatriculaResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def EliminarCurso(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/user_service.UserService/EliminarCurso',
+            user__service__pb2.EliminarCursoRequest.SerializeToString,
+            user__service__pb2.EliminarCursoResponse.FromString,
             options,
             channel_credentials,
             insecure,
