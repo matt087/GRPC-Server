@@ -19,6 +19,16 @@ class User(_message.Message):
     admin: int
     def __init__(self, email: _Optional[str] = ..., password: _Optional[str] = ..., name: _Optional[str] = ..., cursos: _Optional[_Iterable[_Union[Curso, _Mapping]]] = ..., admin: _Optional[int] = ...) -> None: ...
 
+class Curso(_message.Message):
+    __slots__ = ("id", "nombre", "descripcion")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    NOMBRE_FIELD_NUMBER: _ClassVar[int]
+    DESCRIPCION_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    nombre: str
+    descripcion: str
+    def __init__(self, id: _Optional[str] = ..., nombre: _Optional[str] = ..., descripcion: _Optional[str] = ...) -> None: ...
+
 class RegisterRequest(_message.Message):
     __slots__ = ("user",)
     USER_FIELD_NUMBER: _ClassVar[int]
@@ -102,95 +112,3 @@ class ObtenerUsersResponse(_message.Message):
     USERS_FIELD_NUMBER: _ClassVar[int]
     users: _containers.RepeatedCompositeFieldContainer[User]
     def __init__(self, users: _Optional[_Iterable[_Union[User, _Mapping]]] = ...) -> None: ...
-
-class Curso(_message.Message):
-    __slots__ = ("id", "nombre", "descripcion")
-    ID_FIELD_NUMBER: _ClassVar[int]
-    NOMBRE_FIELD_NUMBER: _ClassVar[int]
-    DESCRIPCION_FIELD_NUMBER: _ClassVar[int]
-    id: str
-    nombre: str
-    descripcion: str
-    def __init__(self, id: _Optional[str] = ..., nombre: _Optional[str] = ..., descripcion: _Optional[str] = ...) -> None: ...
-
-class CrearCursoRequest(_message.Message):
-    __slots__ = ("curso",)
-    CURSO_FIELD_NUMBER: _ClassVar[int]
-    curso: Curso
-    def __init__(self, curso: _Optional[_Union[Curso, _Mapping]] = ...) -> None: ...
-
-class CrearCursoResponse(_message.Message):
-    __slots__ = ("success", "message")
-    SUCCESS_FIELD_NUMBER: _ClassVar[int]
-    MESSAGE_FIELD_NUMBER: _ClassVar[int]
-    success: bool
-    message: str
-    def __init__(self, success: bool = ..., message: _Optional[str] = ...) -> None: ...
-
-class EliminarCursoRequest(_message.Message):
-    __slots__ = ("id",)
-    ID_FIELD_NUMBER: _ClassVar[int]
-    id: str
-    def __init__(self, id: _Optional[str] = ...) -> None: ...
-
-class EliminarCursoResponse(_message.Message):
-    __slots__ = ("success", "message")
-    SUCCESS_FIELD_NUMBER: _ClassVar[int]
-    MESSAGE_FIELD_NUMBER: _ClassVar[int]
-    success: bool
-    message: str
-    def __init__(self, success: bool = ..., message: _Optional[str] = ...) -> None: ...
-
-class ObtenerCursoRequest(_message.Message):
-    __slots__ = ()
-    def __init__(self) -> None: ...
-
-class ObtenerCursoResponse(_message.Message):
-    __slots__ = ("curso",)
-    CURSO_FIELD_NUMBER: _ClassVar[int]
-    curso: Curso
-    def __init__(self, curso: _Optional[_Union[Curso, _Mapping]] = ...) -> None: ...
-
-class ObtenerCursoIDResponse(_message.Message):
-    __slots__ = ("id",)
-    ID_FIELD_NUMBER: _ClassVar[int]
-    id: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, id: _Optional[_Iterable[str]] = ...) -> None: ...
-
-class ListCoursesRequest(_message.Message):
-    __slots__ = ()
-    def __init__(self) -> None: ...
-
-class ListCoursesResponse(_message.Message):
-    __slots__ = ("courses",)
-    COURSES_FIELD_NUMBER: _ClassVar[int]
-    courses: _containers.RepeatedCompositeFieldContainer[Curso]
-    def __init__(self, courses: _Optional[_Iterable[_Union[Curso, _Mapping]]] = ...) -> None: ...
-
-class ListUserCoursesRequest(_message.Message):
-    __slots__ = ("email",)
-    EMAIL_FIELD_NUMBER: _ClassVar[int]
-    email: str
-    def __init__(self, email: _Optional[str] = ...) -> None: ...
-
-class ListUserCoursesResponse(_message.Message):
-    __slots__ = ("courses",)
-    COURSES_FIELD_NUMBER: _ClassVar[int]
-    courses: _containers.RepeatedCompositeFieldContainer[Curso]
-    def __init__(self, courses: _Optional[_Iterable[_Union[Curso, _Mapping]]] = ...) -> None: ...
-
-class MatricularCursoRequest(_message.Message):
-    __slots__ = ("email", "course_id")
-    EMAIL_FIELD_NUMBER: _ClassVar[int]
-    COURSE_ID_FIELD_NUMBER: _ClassVar[int]
-    email: str
-    course_id: str
-    def __init__(self, email: _Optional[str] = ..., course_id: _Optional[str] = ...) -> None: ...
-
-class MatricularCursoResponse(_message.Message):
-    __slots__ = ("success", "message")
-    SUCCESS_FIELD_NUMBER: _ClassVar[int]
-    MESSAGE_FIELD_NUMBER: _ClassVar[int]
-    success: bool
-    message: str
-    def __init__(self, success: bool = ..., message: _Optional[str] = ...) -> None: ...

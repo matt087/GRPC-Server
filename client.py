@@ -1,6 +1,8 @@
 import grpc
 import user_service_pb2
 import user_service_pb2_grpc
+import course_service_pb2
+import course_service_pb2_grpc
 import os
 import sys
 
@@ -20,21 +22,21 @@ def distincionMenu(isadmin, user_stub, course_stub, em):
                 if opc in [1,2,3,4]:
                     break
             if opc == 1:
-                response = user_stub.ListCourses(user_service_pb2.ListCoursesRequest())
+                response = course_stub.ListCourses(course_service_pb2.ListCoursesRequest())
                 os.system('cls' if os.name == 'nt' else 'clear')
                 print("\n\tLista de Cursos")
                 for course in response.courses:
                     print(f"ID: {course.id}, Nombre: {course.nombre}, Descripción: {course.descripcion}")
-                response = course_stub.ListCourses(user_service_pb2.ListCoursesRequest())
+                response = course_stub.ListCourses(course_service_pb2.ListCoursesRequest())
                 course_id = input("Ingrese el ID del curso al que desea matricularse: ")                
-                matricula_response = course_stub.MatricularCurso(user_service_pb2.MatricularCursoRequest(email=em, course_id=course_id))
+                matricula_response = course_stub.MatricularCurso(course_service_pb2.MatricularCursoRequest(email=em, course_id=course_id))
                 print(matricula_response.message)
                 input("PULSE CUALQUIER TECLA PARA CONTINUAR...")
                 os.system('cls' if os.name == 'nt' else 'clear')
             elif opc == 2:
                 os.system('cls' if os.name == 'nt' else 'clear')
                 print("\tMis Cursos:")
-                response = user_stub.ListUserCourses(user_service_pb2.ListUserCoursesRequest(email=em))
+                response = course_stub.ListUserCourses(course_service_pb2.ListUserCoursesRequest(email=em))
                 if response.courses:
                     for curso in response.courses:
                         print("-" * 30)
@@ -47,6 +49,8 @@ def distincionMenu(isadmin, user_stub, course_stub, em):
                 input("PULSE CUALQUIER TECLA PARA CONTINUAR...")
                 os.system('cls' if os.name == 'nt' else 'clear')
             elif opc == 3:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print("\tEliminación de Matrícula")
                 course_id = input("Ingrese el ID del curso: ")
                 request = user_service_pb2.EliminarMatriculaRequest(email=em, course_id=course_id)
                 response = user_stub.EliminarMatricula(request)
@@ -93,7 +97,7 @@ def distincionMenu(isadmin, user_stub, course_stub, em):
                 input("PULSE CUALQUIER TECLA PARA CONTINUAR...")
                 os.system('cls' if os.name == 'nt' else 'clear')
             if opc == 2:
-                response = course_stub.ListCourses(user_service_pb2.ListCoursesRequest())
+                response = course_stub.ListCourses(course_service_pb2.ListCoursesRequest())
                 os.system('cls' if os.name == 'nt' else 'clear')
                 print("\n\tLista de Cursos")
                 for curso in response.courses:
@@ -122,8 +126,8 @@ def distincionMenu(isadmin, user_stub, course_stub, em):
                 nombre = input("Ingrese el nombre del curso: ")
                 descripcion = input("Ingrese la descripción del curso: ")
 
-                curso = user_service_pb2.Curso(id=curso_id, nombre=nombre, descripcion=descripcion)
-                request = user_service_pb2.CrearCursoRequest(curso=curso)
+                curso = course_service_pb2.Curso(id=curso_id, nombre=nombre, descripcion=descripcion)
+                request = course_service_pb2.CrearCursoRequest(curso=curso)
 
                 response = course_stub.CrearCurso(request)
                 
@@ -142,8 +146,9 @@ def distincionMenu(isadmin, user_stub, course_stub, em):
 
 def run():
     channel = grpc.insecure_channel('localhost:50051')
+    channel2 = grpc.insecure_channel('localhost:50052')
     user_stub = user_service_pb2_grpc.UserServiceStub(channel)
-    course_stub = user_service_pb2_grpc.CourseServiceStub(channel)
+    course_stub = course_service_pb2_grpc.CourseServiceStub(channel2)
 
     while True:
         print("\tMenú")

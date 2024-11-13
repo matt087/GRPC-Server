@@ -9,6 +9,13 @@ message User {
   repeated Curso cursos = 4;
   int32 admin = 5;
 }
+
+message Curso {
+  string id = 1;
+  string nombre = 2;
+  string descripcion = 3;
+}
+
 message RegisterRequest {
   User user = 1;
 }
@@ -60,78 +67,11 @@ message ObtenerUsersResponse {
   repeated User users = 1;
 }
 
-message Curso {
-  string id = 1;
-  string nombre = 2;
-  string descripcion = 3;
-}
-message CrearCursoRequest {
-  Curso curso = 1;
-}
-
-message CrearCursoResponse {
-  bool success = 1;
-  string message = 2;
-}
-
-message EliminarCursoRequest {
-  string id = 1;
-}
-
-message EliminarCursoResponse {
-  bool success = 1;
-  string message = 2;
-}
-
-message ObtenerCursoRequest {}
-
-message ObtenerCursoResponse {
-  Curso curso = 1;
-}
-
-message ObtenerCursoIDResponse {
-  repeated string id = 1;
-}
-
-message ListCoursesRequest {}
-message ListCoursesResponse {
-    repeated Curso courses = 1;
-}
-
-message ListUserCoursesRequest {
-    string email = 1;
-}
-
-message ListUserCoursesResponse {
-    repeated Curso courses = 1;
-}
-
-message MatricularCursoRequest {
-    string email = 1;
-    string course_id = 2;
-}
-
-message MatricularCursoResponse {
-    bool success = 1;
-    string message = 2;
-}
-
-service CourseService {
-  rpc CrearCurso (CrearCursoRequest) returns (CrearCursoResponse);
-  rpc ObtenerCurso (ObtenerCursoRequest) returns (ObtenerCursoResponse);
-  rpc ObtenerCursoID (ObtenerCursoRequest) returns (ObtenerCursoIDResponse);
-  rpc ListCourses(ListCoursesRequest) returns (ListCoursesResponse);
-  rpc MatricularCurso(MatricularCursoRequest) returns (MatricularCursoResponse);
-}
-
 service UserService {
   rpc Register (RegisterRequest) returns (RegisterResponse);
   rpc Login (LoginRequest) returns (LoginResponse);
   rpc EliminarUser (EliminarUserRequest) returns (EliminarUserResponse);
   rpc ObtenerUser (ObtenerUserRequest) returns (ObtenerUserResponse);
   rpc ObtenerUsers (ObtenerUserRequest) returns (ObtenerUsersResponse);
-  rpc ListCourses(ListCoursesRequest) returns (ListCoursesResponse);
-  rpc ListUserCourses(ListUserCoursesRequest) returns (ListUserCoursesResponse);
   rpc EliminarMatricula(EliminarMatriculaRequest) returns (EliminarMatriculaResponse);
-  rpc EliminarCurso (EliminarCursoRequest) returns (EliminarCursoResponse);
 }
